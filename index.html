@@ -1,817 +1,911 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<title>index</title>
-<link rel="stylesheet" type="text/css" href="css/public.css" />
-<link rel="stylesheet" type="text/css" href="css/style.css" />
-<meta name="author" content="order by www.adminbuy.cn">
-<script src="js/jquery.min.js"></script>
-<script src="js/public.js"></script>
-<script src="js/raphael.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御音阁 - 声动山河，音绘万象！</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        
+        /* 头部导航 */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1rem 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #1a2a3a;
+            text-decoration: none;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-links a {
+            color: #1a2a3a;
+            text-decoration: none;
+            margin-left: 2rem;
+            transition: color 0.3s;
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: #ff8c42;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #ff8c42;
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 容器样式 */
+        .container {
+            max-width: 1200px;
+            margin: 4rem auto 2rem;
+            padding: 0 20px;
+        }
+        
+        /* 动画效果 */
+        .section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 标题样式 */
+        h1, h2, h3 {
+            color: #1a2a3a;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+        
+        /* 内容区域 */
+        .intro-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* 时间线样式 */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 2.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #3498db, #1a2a3a);
+            z-index: 1;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 4rem;
+            margin-bottom: 2rem;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: #3498db;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+            z-index: 2;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0.4);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(52, 152, 219, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
+            }
+        }
+        
+        /* 成员展示 */
+        .core-members {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 576px) {
+            .core-members {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .core-members {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        .member-card {
+            background-color: #e8f4f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .member-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .member-image {
+            width: 100%;
+            height: 150px;
+            background-color: #f0f0f0;
+        }
+        
+        .member-details {
+            padding: 1rem;
+        }
+        
+        .member-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-email {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-email:hover {
+            background-color: #2980b9;
+        }
+        
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f0f0;
+            margin-left: auto;
+            display: block;
+            margin-top: 0.5rem;
+        }
+        
+        /* 分支链接 */
+        .branches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .branch-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            padding: 1rem;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .branch-link:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .branch-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #3498db;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #1a2a3a;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3498db;
+        }
+        
+        .section-title {
+            text-align: center;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #3498db;
+            margin: 0.5rem auto;
+        }
+        
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .social-icons a {
+            margin: 0 0.5rem;
+            color: #3498db;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            color: #ff8c42;
+        }
+
+        /* Banner轮播 */
+        .banner-slider {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 4rem;
+        }
+        
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .banner-slide.active {
+            opacity: 1;
+        }
+        
+        .banner-caption {
+            position: absolute;
+            bottom: 80px;
+            left: 80px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+            padding: 20px 30px;
+            color: white;
+            max-width: 600px;
+            border-radius: 10px;
+        }
+        
+        .banner-caption h2 {
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-caption p {
+            margin: 0;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .banner-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .banner-control {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .banner-control.active {
+            background: white;
+        }
+        
+        .banner-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            transform: translateY(-50%);
+        }
+        
+        .banner-nav button {
+            background: rgba(255, 255, 255, 0.5);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: white;
+            transition: background 0.3s;
+        }
+        
+        .banner-nav button:hover {
+            background: white;
+        }
+        
+        /* 团队瞬间 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 4rem;
+        }
+        
+        .photo-item {
+            position: relative;
+            height: 0;
+            padding-bottom: 65%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .photo-item:hover {
+            transform: scale(1.03);
+        }
+        
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: white;
+            padding: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+        
+        .photo-overlay h4 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .photo-overlay p {
+            margin: 8px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* 作品推荐 */
+        .recommendations {
+            margin-bottom: 4rem;
+        }
+        
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .recommendation-card {
+            background: #e8f4f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .recommendation-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .recommendation-image {
+            height: 200px;
+            background-color: #f0f0f0;
+        }
+        
+        .recommendation-details {
+            padding: 20px;
+        }
+        
+        .recommendation-title {
+            font-size: 1.3rem;
+            margin-bottom: 12px;
+            color: #1a2a3a;
+        }
+        
+        .recommendation-desc {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 18px;
+        }
+        
+        .recommendation-link {
+            display: inline-block;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .recommendation-link:hover {
+            color: #ff8c42;
+        }
+        
+        .recommendation-link::after {
+            content: '→';
+            margin-left: 5px;
+            transition: transform 0.3s;
+        }
+        
+        .recommendation-link:hover::after {
+            transform: translateX(5px);
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-
 <body>
-<div class="topbox">
-  <div class="head clearfloat">
-    <div class="logo clearfloat"> <em></em> <span>智慧消防大数据云平台</span> </div>
-    <div class="nav">
-      <ul class="clearfloat">
-        <li class="active"><a href="">首页</a></li>
-        <li><a href="tmc1.html">产品中心</a>
-          <div class="nav_down">
-            <p><a href="tmc1.html">TMC智慧消防云平台</a></p>
-            <p><a href="tmc2.html">TMC智慧消防APP/小程序</a></p>
-            <p><a href="tmc3.html">TMC可视化指挥平台</a></p>
-            <p><a href="hard.html">硬件终端</a></p>
-          </div>
-        </li>
-        <li><a href="solve.html">解决方案 </a>
-          <div class="nav_down">
-            <p><a href="">火灾自动报警系统解决方案</a></p>
-            <p><a href="">电气火灾监控系统解决方案</a></p>
-            <p><a href="">可燃气体监控系统解决方案</a></p>
-            <p><a href="">消防给水监测系统解决方案</a></p>
-            <p><a href="">气体灭火控制系统解决方案</a></p>
-            <p><a href="">防火门监控系统解决方案</a></p>
-            <p><a href="">消防视频监控系统解决方案</a></p>
-            <p><a href="">消防巡检系统解决方案</a></p>
-            <p><a href="">应急疏散系统解决方案</a></p>
-          </div>
-        </li>
-        <li><a href="case.html">应用案例</a></li>
-        <li><a href="agent.html">招商代理</a></li>
-        <li><a href="about.html">关于我们</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
+    <header>
+        <nav>
+            <a href="#" class="logo">御音阁</a>
+            <div class="nav-links">
+                <a href=".\index.html#">首页</a>			
+                <a href=".\index.html#intro">简介</a>
+				<a href=".\index.html#tuandui">风采</a>
+                <a href=".\index.html#members">成员</a>
+				<a href=".\index.html#zuopin">作品 </a>
+				<a href=".\index.html#history">历程</a>
+                <a href=".\index.html#branches">其他</a>
+				<a href=".\about.html">关于</a>
+            </div>
+        </nav>
+    </header>
 
-<!--top-->
-
-<div class="wraps">
-  <div class="banner">
-    <ul class="clearfloat bannerul">
-      <li> <img src="images/banner.png" />
-        <div class="ban_text">
-          <h2>让消防数据产生价值</h2>
-          <div class="ban_info"> 大数据+消防，运用大数据分析研判、预知预警、辅助决策并指导实战，全面提升消防安全 </div>
-          <div class="ban_more"> <a href="">立即咨询</a> </div>
+    <!-- Banner轮播 -->
+    <div class="banner-slider">
+        <div class="banner-slide active" style="background-image: url('https://via.placeholder.com/1920x800/3498db/ffffff?text=御音阁+声音艺术')">
+            <div class="banner-caption">
+                <h2>声动山河🎙音绘万象</h2>
+                <p>用声音传递情感，用声音描绘世界</p>
+            </div>
         </div>
-      </li>
-      <li> <img src="images/banner.png" />
-        <div class="ban_text">
-          <h2>让消防数据产生价值</h2>
-          <div class="ban_info"> 大数据+消防，运用大数据分析研判、预知预警、辅助决策并指导实战，全面提升消防安全 </div>
-          <div class="ban_more"> <a href="">立即咨询</a> </div>
+        <div class="banner-slide" style="background-image: url('https://via.placeholder.com/1920x800/e74c3c/ffffff?text=御音阁+精彩瞬间')">
+            <div class="banner-caption">
+                <h2>御音阁风采</h2>
+                <p>探索我们的声音世界</p>
+            </div>
         </div>
-      </li>
-      <li> <img src="images/banner.png" />
-        <div class="ban_text">
-          <h2>让消防数据产生价值</h2>
-          <div class="ban_info"> 大数据+消防，运用大数据分析研判、预知预警、辅助决策并指导实战，全面提升消防安全 </div>
-          <div class="ban_more"> <a href="">立即咨询</a> </div>
-        </div>
-      </li>
-      <li> <img src="images/banner.png" />
-        <div class="ban_text">
-          <h2>让消防数据产生价值</h2>
-          <div class="ban_info"> 大数据+消防，运用大数据分析研判、预知预警、辅助决策并指导实战，全面提升消防安全 </div>
-          <div class="ban_more"> <a href="">立即咨询</a> </div>
-        </div>
-      </li>
-    </ul>
-    <ul class="num clearfloat">
-      <li class="active"></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
-  </div>
-  
-  <!--banner-->
-  
-  <div class="pro_box">
-    <div class="pro_tit"> 产业中心 </div>
-    <div class="pro_info"> 零平台建设成本、租用式云服务，24小时在线防火告警通知服务 </div>
-    <div class="pro_list">
-      <ul class="clearfloat">
-        <li class="active">
-          <div class="pro_top"> <a href="javascript:void(0);"> &#xe615; </a> </div>
-          <div class="pro_name"> 云平台 </div>
-        </li>
-        <li>
-          <div class="pro_top"> <a href="javascript:void(0);"> &#xe610; </a> </div>
-          <div class="pro_name"> 移动端 </div>
-        </li>
-        <li>
-          <div class="pro_top"> <a href="javascript:void(0);"> &#xe613; </a> </div>
-          <div class="pro_name"> 可视化指挥平台 </div>
-        </li>
-        <li>
-          <div class="pro_top"> <a href="javascript:void(0);"> &#xe691; </a> </div>
-          <div class="pro_name"> 硬件终端 </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-  
-  <!--产业中心-->
-  
-  <div class="tmcbox">
-    <div class="tmc active clearfloat">
-      <div class="tmc_pic"> <img src="images/tmc.png" /> </div>
-      <div class="tmc_text">
-        <div class="tmc_tit"> TMC智慧消防云平台 </div>
-        <div class="tmc_info"> TMC智慧消防云平台在现有的消防系统基础上，结合大数据、物联网、云计算等先进技术，通过在硬件层加入数据采集设备，构建传感网络，将数据上传至云平台，开发针对性的业务模块，将“人防、物防、技防”结合应用于传统的消防管理和监督，实现四个消防在线。 </div>
-      </div>
-    </div>
-    <div class="tmc clearfloat">
-      <div class="tmc_pic"> <img src="images/tmc.png" /> </div>
-      <div class="tmc_text">
-        <div class="tmc_tit"> TMC智慧消防移动端 </div>
-        <div class="tmc_info"> TMC智慧消防移动端是针对我国消防监管管理工作任务繁重，警力不足，检查不规范等现实情况而研发，以标准化，规范化，便携化，可扩展化为基本理念，从社会单位、维保单位，管理部门三种维度设计出消防监督管理APP和小程序，从而实现社会单位的消防实时安全管理。 </div>
-      </div>
-    </div>
-    <div class="tmc clearfloat">
-      <div class="tmc_pic"> <img src="images/tmc.png" /> </div>
-      <div class="tmc_text">
-        <div class="tmc_tit"> TMC可视化指挥平台 </div>
-        <div class="tmc_info"> “一张图”实战指挥系统，实现多领域安防系统大联网，可视化呈现救援信息要素，打通从灾情感知到智能研判再到救援调度的整个救灾流程。通过一张图做到指挥、调度、分析、决策一气呵成，为分秒必争的火灾救援抢时间。 </div>
-      </div>
-    </div>
-    <div class="tmc clearfloat">
-      <div class="tmc_pic"> <img src="images/tmc.png" /> </div>
-      <div class="tmc_text">
-        <div class="tmc_tit"> 硬件终端 </div>
-        <div class="tmc_info"> 国内领先、最全的智慧消防物联网云产品 </div>
-      </div>
-    </div>
-  </div>
-  
-  <!--TMC-->
-  
-  <div class="solut_box">
-    <ul class="solu_ban">
-      <li class="active"><img src="images/bj1.png" /></li>
-      <li><img src="images/bj2.png" /></li>
-      <li><img src="images/bj3.png" /></li>
-      <li><img src="images/bj4.png" /></li>
-      <li><img src="images/bj5.png" /></li>
-      <li><img src="images/bj6.png" /></li>
-      <li><img src="images/bj1.png" /></li>
-      <li><img src="images/bj2.png" /></li>
-      <li><img src="images/bj3.png" /></li>
-    </ul>
-    
-    <!--背景图-->
-    
-    <div class="plan_box clearfloat">
-      <div class="sidebar">
-        <div class="prev "> <img src="images/prev.png" /> </div>
-        <div class="slide_ban">
-          <ul>
-            <li class="active"> <a href="javascript:void(0);">
-              <h2>火灾自动报警系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>电气火灾监控系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>可燃气体监控系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>消防给水监测系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>气体灭火控制系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>防火门监控系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>消防视频监控系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>消防巡检系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-            <li> <a href="javascript:void(0);">
-              <h2>应急疏散系统</h2>
-              <div class="slide_way"> 解决方案 </div>
-              </a> </li>
-          </ul>
-        </div>
-        <div class="next active"> <img src="images/next.png" /> </div>
-      </div>
-      
-      <!--左侧banner-->
-      
-      <div class="blur_box">
-        <div class="blut_top">
-          <h2>解决方案</h2>
-          <div class="blur_info"> 九大消防子系统构建的城市智慧感知网络，实现烟、温、水、电、火、视频等传感数据采集 </div>
-        </div>
-        <div class="blut_ban">
-          <ul>
-            <li class="active">
-              <div class="blut_name"> 火灾自动报警系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 电气火灾监控系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 可燃气体监控系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 消防给水监测系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 气体灭火控制系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 防火门监控系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 消防视频监控系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 消防巡检系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-            <li>
-              <div class="blut_name"> 应急疏散系统解决方案 </div>
-              <div class="blur_text"> 电气火灾监控系统通过对电器线路漏电（剩余电流）、线路或连接点温度的监测，准确监控电气线路的故障和异常状态，能有效地预防常见的因漏电导致接地电弧、线路或连接点温度过高所引起的建筑物电气火灾事故。 </div>
-              <div class="blur_more"> <a href="">查看详情</a> </div>
-              <div class="point_tit"> 功能特点 </div>
-              <div class="point clearfloat">
-                <div class="char">
-                  <p> <span>零建设成本租用式服务</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>语音、短信、APP</span> <span>三种通知模式</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>24小时联网监测</span> <span>多方联动</span> </p>
-                </div>
-                <div class="char">
-                  <p> <span>大数据分析火灾</span> <span>智能研判</span> </p>
-                </div>
-              </div>
-              <div class="point_tit"> 典型案例 </div>
-              <div class="typi"> <a href=""><img src="images/typi1.png" /></a> <a href=""><img src="images/typi2.png" /></a> </div>
-            </li>
-          </ul>
+        <div class="banner-slide" style="background-image: url('https://via.placeholder.com/1920x800/2980b9/ffffff?text=御音阁+核心团队')">
+            <div class="banner-caption">
+                <h2>核心团队</h2>
+                <p>了解我们的声音艺术家</p>
+            </div>
         </div>
         
-        <!--解决方案bannaer--> 
+        <div class="banner-controls">
+            <div class="banner-control active"></div>
+            <div class="banner-control"></div>
+            <div class="banner-control"></div>
+        </div>
         
-      </div>
-      
-      <!--方案--> 
-      
-    </div>
-  </div>
-  
-  <!--解决方案-->
-  
-  <div class="apply_box">
-    <div class="apply_tit"> 应用案例 </div>
-    <div class="apply_list">
-      <ul class="clearfloat">
-        <li> <a href="">
-          <div class="apply_pic"> <img src="images/apply1.png" /> </div>
-          <h1 class="app_name">武汉黄鹤楼</h1>
-          <div class="apptext"> 黄鹤楼位于湖北省武汉市长江南岸的武昌蛇山之巅，濒临万里长江，是国家5A级旅游景区。楼高5层，总高度51.4米，建筑面积3219平方米。楼内建筑多为木质材料，为消防安全考虑，中科图灵为黄鹤楼内各区域安装战马智能烟雾报警器。 </div>
-          </a> </li>
-        <li class="active"> <a href="">
-          <div class="apply_pic"> <img src="images/apply2.png" /> </div>
-          <h1 class="app_name">盐城城南新区新河街道</h1>
-          <div class="apptext"> 新河街道环境比较复杂，火灾隐患较大，新河商业街最近几年就发生了多起火灾。城南新区新河街道联合盐城市消防支队，在整个街道重点商户、群租房、养老院、新河街道本部安装中科图灵NB-IoT智慧烟感。并在此次展示会上，向省总队领导介绍了中科图灵... </div>
-          </a> </li>
-        <li> <a href="" class="clearfloat">
-          <div class="apply_pic clearfloat"> <img src="images/apply3.png" /> </div>
-          <h1 class="app_name">无锡恒隆广场</h1>
-          <div class="apptext"> 无锡恒隆广场（一期）的面积达262,720平方米，包括购物商场及甲级办公楼群。为保障消防安全，中科图灵为恒楼广场设计消防安装部署方案并派工程队前往安装。 </div>
-          </a> </li>
-      </ul>
-    </div>
-  </div>
-  
-  <!--应用案例-->
-  
-  <div class="friendbox">
-    <div class="fr_tit"> 合作伙伴 </div>
-    <div class="friend">
-      <ul class="clearfloat">
-        <li> <a href=""><img src="images/friend1.png" /></a> </li>
-        <li> <a href=""><img src="images/friend2.png" /></a> </li>
-        <li> <a href=""><img src="images/friend3.png" /></a> </li>
-        <li> <a href=""><img src="images/friend4.png" /></a> </li>
-        <li> <a href=""><img src="images/friend5.png" /></a> </li>
-        <li> <a href=""><img src="images/friend6.png" /></a> </li>
-        <li> <a href=""><img src="images/friend7.png" /></a> </li>
-        <li> <a href=""><img src="images/friend8.png" /></a> </li>
-      </ul>
-    </div>
-  </div>
-  
-  <!--合作伙伴-->
-  
-  <div class="footerbox">
-    <div class="footer clearfloat">
-      <div class="hot_line">
-        <div class="hot_tit"> <span>售前咨询热线</span> </div>
-        <div class="call"> 400-888-8888 </div>
-        <div class="qqin"> QQ咨询 </div>
-      </div>
-      <div class="fast_nav">
-        <div class="fast_tit"> 快速导航 </div>
-        <div class="fast_list">
-          <p><a href="tmc1.html">产品中心</a></p>
-          <p><a href="solve.html">解决方案</a></p>
-          <p><a href="case.html">应用案例</a></p>
-          <p><a href="agent.html">招商代理</a></p>
-          <p><a href="about.html">关于我们</a></p>
+        <div class="banner-nav">
+            <button class="banner-prev">&lt;</button>
+            <button class="banner-next">&gt;</button>
         </div>
-      </div>
-      <div class="contus">
-        <div class="fast_tit"> 联系我们 </div>
-        <div class="fast_list">
-          <p>武汉江苏某某科技有限公司</p>
-          <p>地址：江苏省南京市玄武区玄武湖</p>
-          <p>邮箱：admin@adminbuy.cn</p>
-          <p>电话：400-888-8888</p>
+    </div>
+
+    <div class="container">
+        <section id="intro" class="section">
+            <h1>御音阁简介</h1>
+            <div class="intro-content">
+                <p>御音阁是一个致力于用声音演绎万千世界的团队，长期纳新，欢迎有志之士加入我们！</p>
+                <p>我们专注于声音创作，通过声音传递情感，描绘出一幅幅生动的"声音画卷"。</p>
+                <p>我们的理念是"声动山河，音绘万象"，相信声音的力量可以跨越视觉的界限，触动人心，创造无限可能。</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 团队瞬间 -->
+        <section id="tuandui" class="section">
+            <h2 class="section-title">团队瞬间</h2>
+            <div class="photo-grid">
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片1')">
+                    <div class="photo-overlay">
+                        <h4>团队排练</h4>
+                        <p>成员们在录音室的专注瞬间</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片2')">
+                    <div class="photo-overlay">
+                        <h4>录音现场</h4>
+                        <p>捕捉声音创作的精彩瞬间</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片3')">
+                    <div class="photo-overlay">
+                        <h4>成员交流</h4>
+                        <p>创作讨论中的思维碰撞</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片4')">
+                    <div class="photo-overlay">
+                        <h4>团队活动</h4>
+                        <p>工作之余的轻松时光</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片5')">
+                    <div class="photo-overlay">
+                        <h4>声音制作</h4>
+                        <p>后期处理的精细操作</p>
+                    </div>
+                </div>
+                <div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片6')">
+                    <div class="photo-overlay">
+                        <h4>成果展示</h4>
+                        <p>完成作品的满足感</p>
+                    </div>
+                </div>
+				<div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片6')">
+                    <div class="photo-overlay">
+                        <h4>成果展示</h4>
+                        <p>完成作品的满足感</p>
+                    </div>
+                </div>
+				<div class="photo-item" style="background-image: url('https://via.placeholder.com/300x200/f0f0f0/333?text=照片6')">
+                    <div class="photo-overlay">
+                        <h4>成果展示</h4>
+                        <p>完成作品的满足感</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="members" class="section">
+            <h2 class="section-title">核心成员</h2>
+            <div class="core-members">
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+                <div class="member-card">
+                    <div class="member-image"></div>
+                    <div class="member-details">
+                        <h3 class="member-name">CV:枫</h3>
+                        <p>青年音/男，声如候鸟迁徙，途经你的耳际</p>
+                        <a href="mailto:hx@ihcking.com" class="contact-email">联系邮箱</a>
+                    </div>
+                    <div class="qr-code"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 作品推荐 -->
+        <section id="zuopin" class="recommendations section">
+            <h2 class="section-title">作品推荐</h2>
+            <div class="recommendation-grid">
+                <div class="recommendation-card">
+                    <div class="recommendation-image"></div>
+                    <div class="recommendation-details">
+                        <h3 class="recommendation-title">御音阁·考核本</h3>
+                        <p class="recommendation-desc">基础考核本，帮助新人快速适应声音创作</p>
+                        <a href="#" class="recommendation-link">了解更多</a>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-image"></div>
+                    <div class="recommendation-details">
+                        <h3 class="recommendation-title">御音阁·早功本</h3>
+                        <p class="recommendation-desc">早功练习本，日常声音训练必备</p>
+                        <a href="#" class="recommendation-link">了解更多</a>
+                    </div>
+                </div>
+                <div class="recommendation-card">
+                    <div class="recommendation-image"></div>
+                    <div class="recommendation-details">
+                        <h3 class="recommendation-title">御音阁·引导本</h3>
+                        <p class="recommendation-desc">新人引导本，开启声音之旅的指南</p>
+                        <a href="#" class="recommendation-link">了解更多</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="section">
+            <h2 class="section-title">发展历程</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>成立初期</h3>
+                    <p>团队初步组建，确定基本理念和方向</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2024年1月</h3>
+                    <p>发布基础考核本、早功练习本、新人引导本等作品</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2025年3月</h3>
+                    <p>持续发展，推出更多优秀作品和活动</p>
+                </div>
+            </div>
+        </section>
+        <section id="branches" class="section">
+            <h2 class="section-title">分支跳转</h2>
+            <div class="branches">
+			    <a href="https://hc.ihcking.com/" class="branch-link" target="_blank">
+                    <div class="branch-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>皇宸部落</h3>
+                </a>
+                <a href="#intro" class="branch-link">
+                    <div class="branch-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h3>团队简介</h3>
+                </a>
+                <a href="#members" class="branch-link">
+                    <div class="branch-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>核心成员</h3>
+                </a>
+                <a href="#" class="branch-link" target="_blank">
+                    <div class="branch-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>加入我们</h3>
+                </a>
+                
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 御音阁 - 声动山河，音绘万象！</p>
+        <div class="footer-links">
+            <a href="mailto:hx@ihcking.com">加入我们</a>
+            <a href="mailto:hx@ihcking.com">联系我们</a>
+            <a href="https://hc.ihcking.com/">皇宸部落</a>
         </div>
-      </div>
-      <div class="code">
-        <div class="code_pic"> <img src="images/code.png" /> </div>
-        <div class="code_text"> 微信公众号 </div>
-      </div>
-    </div>
-    <div class="copy"> Copyright © 江苏某某科技有限公司, All Rights Reserved. <a href="http://www.adminbuy.cn" target="_blank">网站模板</a></div>
-  </div>
-  <div class="contact">
-    <div class="callbox"> <span>&#xe606;</span>
-      <div class="call_num"> 400-888-8888 </div>
-    </div>
-    <div class="wxbox"> <span></span>
-      <div class="wxpic"> <img src="images/weixin.png" /> </div>
-    </div>
-    <div class="return"> <span></span> 
-      
-      <!--<img src="images/return.png"/>--> 
-      
-    </div>
-  </div>
-</div>
+    </footer>
 
-<!--右侧返回顶部-->
+    <script>
+        // 滚动时导航栏效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // 滚动时section显示动画
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        });
+        
+        // 页面加载时检查section位置
+        window.addEventListener('load', function() {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.75) {
+                    section.classList.add('visible');
+                }
+            });
+        });
 
+        // Banner轮播功能
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const controls = document.querySelectorAll('.banner-control');
+        const prevBtn = document.querySelector('.banner-prev');
+        const nextBtn = document.querySelector('.banner-next');
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            controls.forEach(control => control.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            controls[index].classList.add('active');
+            currentSlide = index;
+        }
+        
+        function nextSlide() {
+            let next = currentSlide + 1;
+            if (next >= slides.length) next = 0;
+            showSlide(next);
+        }
+        
+        function prevSlide() {
+            let prev = currentSlide - 1;
+            if (prev < 0) prev = slides.length - 1;
+            showSlide(prev);
+        }
+        
+        // 自动轮播
+        setInterval(nextSlide, 7000);
+        
+        // 控制按钮点击事件
+        controls.forEach((control, index) => {
+            control.addEventListener('click', () => showSlide(index));
+        });
+        
+        // 上下一张按钮
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+        
+        // 点击事件轮播
+        document.querySelector('.banner-slider').addEventListener('click', function(e) {
+            if (e.target.classList.contains('banner-slide')) {
+                showSlide(Array.from(slides).indexOf(e.target));
+            }
+        });
+    </script>
 </body>
-<script>
-
-		var banner = function() {
-
-			(function(obj) {
-
-				obj.win = {
-
-					loopFun: function(el, val, bg, color, textColor, fontSize, size, r, time, easing) {
-
-						var si = r + size / 2;
-
-						var xy = r + size;
-
-						if (val < 0 || val > 100) {
-
-							return alert('请输入0~100之间的数')
-
-						}
-
-						var paper = Raphael(el, (r + size) * 2, (r + size) * 2);
-
-						paper.circle(xy, xy, r).attr({
-
-							'stroke-width': size,
-
-							stroke: bg
-
-						});
-
-						paper.customAttributes.arc = function(val) {
-
-							var v = 360 * val / 100,
-
-								s = -180,
-
-								e = s + v,
-
-								x = xy,
-
-								y = xy,
-
-								rad = Math.PI / 180,
-
-								x1 = x + r * Math.sin(-s * rad),
-
-								y1 = y + r * Math.cos(-s * rad),
-
-								x2 = x + r * Math.sin(-e * rad),
-
-								y2 = y + r * Math.cos(-e * rad),
-
-								path = [
-
-									['M', x1, y1],
-
-									['A', r, r, 0, +(e - s > 180), 1, x2, y2]
-
-								];
-
-							return {
-
-								path: path
-
-							};
-
-						};
-
-						var an = paper.path().attr({
-
-							'stroke-width': size,
-
-							stroke: color,
-
-							arc: 0.01
-
-						});
-
-						an.animate({
-
-							stroke: color,
-
-							arc: val
-
-						}, time, easing);
-
-						setTimeout(function() {
-
-							if (val == 100) {
-
-								paper.circle(xy, xy, r).attr({
-
-									'stroke-width': size,
-
-									stroke: color
-
-								});
-
-							}
-
-						}, time);
-
-						paper.customAttributes.txt = function(val) {
-
-							return {
-
-								text: Math.floor(val * 100) / 100 + '%'
-
-							}
-
-						};
-
-						var l = paper.text(xy, xy).attr({
-
-							txt: 0,
-
-							'fill': textColor,
-
-							'font-size': fontSize,
-
-							'font-weight': 700
-
-						});
-
-						l.animate({
-
-							txt: val
-
-						}, time);
-
-					},
-
-					stripFun: function(el, val, bg, color, textColor, fontSize, lenght, size, time, easing) {
-
-						var s = size / 2;
-
-						if (val < 0 || val > 100) {
-
-							return alert('请输入0~100之间的数')
-
-						}
-
-						var paper = Raphael(el, lenght, size);
-
-						paper.path('M 0,' + s + ' L' + lenght + ',' + s).attr({
-
-							'stroke-width': size,
-
-							stroke: bg
-
-						});
-
-						var strip = paper.path('M 0,' + s + ' L0,' + s).attr({
-
-							'stroke-width': size,
-
-							stroke: color
-
-						});
-
-						strip.animate({
-
-							path: 'M 0,' + s + ' L' + lenght / 100 * val + ',' + s
-
-						}, time, easing);
-
-						paper.customAttributes.arc = function(val) {
-
-							return {
-
-								text: Math.floor(val * 100) / 100 + '%'
-
-							}
-
-						};
-
-						var l = paper.text(lenght / 2, s).attr({
-
-							arc: 0,
-
-							'fill': textColor,
-
-							'font-size': fontSize
-
-						});
-
-						l.animate({
-
-							arc: val
-
-						}, time);
-
-					}
-
-				};
-
-			})(window);
-
-			win.loopFun($('.num li.active')[0], 100, '#808080', '#ffffff', 'none', '2px', 2, 7, 5000, 'linear');
-
-			var widths = $(".banner").width();
-
-			var lengths = $('.bannerul li').length;
-
-			$('.bannerul').append($('.bannerul li').first().clone());
-
-			var sid = null;
-
-			var index = 0;
-
-			$('.bannerul li').width(widths)
-
-
-
-			function play() {
-
-				index++;
-
-				if (index == $('.bannerul li').length) {
-
-					index = 1;
-
-					$('.bannerul').stop().animate({
-
-						'margin-left': 0
-
-					}, 0)
-
-				}
-
-				if (index == $('.bannerul li').length - 1) {
-
-					$(' .num li').eq(0).addClass('active').siblings().removeClass('active');
-
-					$(' .num li').eq(0).siblings("li").removeClass('active');
-
-				}
-
-				core(index);
-
-			}
-
-			sid = setInterval(play, 5000);
-
-			$(' .banner').hover(function() {
-
-				clearInterval(sid)
-
-			}, function() {
-
-				sid = setInterval(play, 5000);
-
-			})
-
-			$(".num li").click(function() {
-
-				index = $(this).index();
-
-				core(index);
-
-			})
-
-
-
-			function core(num) {
-
-				$('.bannerul').stop().animate({
-
-					'margin-left': -($('.bannerul li').eq(0).innerWidth() * num)
-
-				}, 1000);
-
-				$(' .num li').eq(num).addClass('active').siblings().removeClass('active');
-
-				win.loopFun($('.num li.active')[0], 100, '#808080', '#ffffff', 'none', '2px', 2, 7, 5000, 'linear');
-
-				$(' .num li').eq(num).siblings("li").find("svg").remove()
-
-					//          console.log(num)
-
-			}
-
-		}
-
-		banner();
-
-	</script>
 </html>
